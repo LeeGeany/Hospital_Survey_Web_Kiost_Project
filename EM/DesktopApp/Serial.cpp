@@ -38,13 +38,13 @@ DWORD WINAPI SerialThread(LPVOID IpParam)
 	dcb.DCBlength = sizeof(dcb);
 
 	fsuccess = GetCommState(hCom, &dcb);
-	if (!fsuccess) {
 #ifdef DEBUG
+	if (!fsuccess) {
 		printf("Com State Error!\n");
-#endif
 		CloseHandle(hCom);
 		exit(1);
 	}
+#endif
 
 	dcb.BaudRate = CBR_9600;
 	dcb.ByteSize = 8;
@@ -52,37 +52,37 @@ DWORD WINAPI SerialThread(LPVOID IpParam)
 	dcb.Parity = NOPARITY;
 
 	fsuccess = SetCommState(hCom, &dcb);
-	if (!fsuccess) {
 #ifdef DEBUG
+	if (!fsuccess) {
 		printf("DCB Structure Error!\n");
-#endif
 		CloseHandle(hCom);
 		exit(1);
 	}
+#endif
 
 	// ---------- 통신 타임 아웃 설정 ---------- //
 	timeouts.ReadIntervalTimeout = 1;
 	timeouts.ReadTotalTimeoutConstant = 1;
 	timeouts.ReadTotalTimeoutMultiplier = 1;
 
+#ifdef DEBUG
 	if (SetCommTimeouts(hCom, &timeouts) == FALSE)
 	{
-#ifdef DEBUG
 		printf("Time Structure Error!\n");
-#endif
 		CloseHandle(hCom);
 		exit(1);
 	}
+#endif
 
 	// ---------- 통신 이벤트 설정 ---------- //
 	fsuccess = SetCommMask(hCom, EV_RXCHAR);
-	if (!fsuccess) {
 #ifdef DEBUG
+	if (!fsuccess) {
 		printf("Setting CommMask Error!\n");
-#endif
 		CloseHandle(hCom);
 		exit(1);
 	}
+#endif
 
 	// ---------- 통신 이벤트 발생 시 데이터 전송 ---------- //
 	for (;;)
